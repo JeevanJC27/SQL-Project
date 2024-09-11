@@ -1,4 +1,5 @@
 # SQL-Project
+``` SQL 
 use painting;
 
 select * from artist; -- 421
@@ -9,7 +10,7 @@ select * from museum_hours; -- 351
 select * from product_size; -- 110135
 select * from subject; -- 6771
 select * from work; -- 14776
-
+```
 -- 1) Fetch all the paintings which are not displayed on any museums?
 
 select *
