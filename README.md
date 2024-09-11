@@ -1,4 +1,4 @@
-# SQL-Project
+# CASE STUDY SQL-Project
 ``` SQL 
 use painting;
 
@@ -11,14 +11,14 @@ select * from product_size; -- 110135
 select * from subject; -- 6771
 select * from work; -- 14776
 ```
--- 1) Fetch all the paintings which are not displayed on any museums?
-
+#### 1) Fetch all the paintings which are not displayed on any museums?
+``` SQL
 select *
 from work
 where museum_id is null;
-
--- 2) Are there museuems without any paintings?
-
+```
+#### 2) Are there museuems without any paintings?
+``` SQL
 select 
 	museum_id,
     m.name
@@ -26,13 +26,13 @@ from museum as m
 where not exists(select museum_id
 			from work as w
             where w.museum_id = m.museum_id);
-
--- 3) How many paintings have an asking price of more than their regular price? 
-
+```
+#### 3) How many paintings have an asking price of more than their regular price? 
+``` SQL
 select *
 from product_size
 where sale_price > regular_price;
-
+```
 -- 4) Identify the paintings whose asking price is less than 50% of its regular price
 
 select work_id,size_id,sale_price,regular_price
