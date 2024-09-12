@@ -1,4 +1,17 @@
 # CASE STUDY SQL-Project
+
+### Data cleaning in Python
+##### Import essential libraries
+``` SQL
+import pandas as pd 
+import numpy as np
+import os
+from sqlalchemy import create_engine
+from urllib.parse import quote
+import duckdb
+import matplotlib.pyplot as plt
+import seaborn as sns
+```
 ``` SQL 
 use painting;
 
