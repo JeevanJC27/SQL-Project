@@ -1,17 +1,50 @@
 # CASE STUDY SQL-Project
 
-### Data cleaning in Python
-##### Import essential libraries
-``` SQL
+## Data cleaning in Python
+#### Import essential libraries
+`` SQL
 import pandas as pd 
-import numpy as np
-import os
 from sqlalchemy import create_engine
 from urllib.parse import quote
-import duckdb
-import matplotlib.pyplot as plt
-import seaborn as sns
+``
+#### Creating Database connection
+``` SQL
+password = '******'
+encode_password = quote(password,safe='')
+connection = f"mysql+mysqlconnector://root:{encode_password}@localhost:3306/painting"
+db = create_engine(connection)
+conn = db.connect()
+artist = pd.read_csv(f"D:/Project/SQL Project/Painting/DataSet/artist.csv")
+canvas_size = pd.read_csv(f"D:/Project/SQL Project/Painting/DataSet/canvas_size.csv")
+image_link = pd.read_csv(f"D:/Project/SQL Project/Painting/DataSet/image_link.csv")
+museum = pd.read_csv(f"D:/Project/SQL Project/Painting/DataSet/museum.csv")
+museum_hours = pd.read_csv(f"D:/Project/SQL Project/Painting/DataSet/museum_hours.csv")
+product_size = pd.read_csv(f"D:/Project/SQL Project/Painting/DataSet/product_size.csv")
+subject = pd.read_csv(f"D:/Project/SQL Project/Painting/DataSet/subject.csv")
+work = pd.read_csv(f"D:/Project/SQL Project/Painting/DataSet/work.csv")
 ```
+## Data prepration
+### Artist
+``` SQL
+artist.info()
+<class 'pandas.core.frame.DataFrame'>
+RangeIndex: 421 entries, 0 to 420
+Data columns (total 9 columns):
+ #   Column        Non-Null Count  Dtype 
+---  ------        --------------  ----- 
+ 0   artist_id     421 non-null    int64 
+ 1   full_name     421 non-null    object
+ 2   first_name    421 non-null    object
+ 3   middle_names  148 non-null    object
+ 4   last_name     421 non-null    object
+ 5   nationality   421 non-null    object
+ 6   style         421 non-null    object
+ 7   birth         421 non-null    int64 
+ 8   death         421 non-null    int64 
+dtypes: int64(3), object(6)
+memory usage: 29.7+ KB
+```
+
 ``` SQL 
 use painting;
 
