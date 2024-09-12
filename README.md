@@ -2,11 +2,11 @@
 
 ## Data cleaning in Python
 #### Import essential libraries
-`` SQL
+``` SQL
 import pandas as pd 
 from sqlalchemy import create_engine
 from urllib.parse import quote
-``
+```
 #### Creating Database connection
 ``` SQL
 password = '******'
@@ -44,7 +44,257 @@ Data columns (total 9 columns):
 dtypes: int64(3), object(6)
 memory usage: 29.7+ KB
 ```
+``` SQL
+artist.isnull().sum()
+artist_id         0
+full_name         0
+first_name        0
+middle_names    273
+last_name         0
+nationality       0
+style             0
+birth             0
+death             0
+dtype: int64
+```
+``` SQL
+Checking for duplicate
+artist.duplicated().sum()
+0
+```
+``` SQL
+I am droping this column because I have this middle name in my full_name column
+artist.drop(['middle_names'],axis=1,inplace=True)
+artist.columns
+Index(['artist_id', 'full_name', 'first_name', 'last_name', 'nationality',
+       'style', 'birth', 'death'],
+      dtype='object')
+```
+``` SQL
+artist.shape
+(421, 8)
+```
+### canvas_size
+``` SQL
+canvas_size.info()
+<class 'pandas.core.frame.DataFrame'>
+RangeIndex: 200 entries, 0 to 199
+Data columns (total 4 columns):
+ #   Column   Non-Null Count  Dtype  
+---  ------   --------------  -----  
+ 0   size_id  200 non-null    int64  
+ 1   width    200 non-null    int64  
+ 2   height   193 non-null    float64
+ 3   label    200 non-null    object 
+dtypes: float64(1), int64(2), object(1)
+memory usage: 6.4+ KB
+```
+``` SQL
+canvas_size.isnull().sum()
+size_id    0
+width      0
+height     7
+label      0
+dtype: int64
+```
+### image_link
+``` SQL
+image_link.info()
+<class 'pandas.core.frame.DataFrame'>
+RangeIndex: 14775 entries, 0 to 14774
+Data columns (total 4 columns):
+ #   Column               Non-Null Count  Dtype 
+---  ------               --------------  ----- 
+ 0   work_id              14775 non-null  int64 
+ 1   url                  14775 non-null  object
+ 2   thumbnail_small_url  14773 non-null  object
+ 3   thumbnail_large_url  14773 non-null  object
+dtypes: int64(1), object(3)
+memory usage: 461.8+ KB
+```
+``` SQL
+image_link.shape
+(14775, 4)
 
+image_link.isnull().sum()
+work_id                0
+url                    0
+thumbnail_small_url    2
+thumbnail_large_url    2
+dtype: int64
+
+image_link.dropna(inplace=True)
+
+image_link.isnull().sum()
+work_id                0
+url                    0
+thumbnail_small_url    0
+thumbnail_large_url    0
+dtype: int64
+```
+### museum
+``` SQL
+museum.info()
+<class 'pandas.core.frame.DataFrame'>
+RangeIndex: 57 entries, 0 to 56
+Data columns (total 9 columns):
+ #   Column     Non-Null Count  Dtype 
+---  ------     --------------  ----- 
+ 0   museum_id  57 non-null     int64 
+ 1   name       57 non-null     object
+ 2   address    57 non-null     object
+ 3   city       57 non-null     object
+ 4   state      38 non-null     object
+ 5   postal     50 non-null     object
+ 6   country    57 non-null     object
+ 7   phone      57 non-null     object
+ 8   url        57 non-null     object
+dtypes: int64(1), object(8)
+memory usage: 4.1+ KB
+```
+``` SQL
+museum.isnull().sum()
+museum_id     0
+name          0
+address       0
+city          0
+state        19
+postal        7
+country       0
+phone         0
+url           0
+dtype: int64
+```
+``` SQL
+museum.shape
+(57, 9)
+```
+### museum_hours
+``` SQL
+museum_hours.info()
+<class 'pandas.core.frame.DataFrame'>
+RangeIndex: 351 entries, 0 to 350
+Data columns (total 4 columns):
+ #   Column     Non-Null Count  Dtype 
+---  ------     --------------  ----- 
+ 0   museum_id  351 non-null    int64 
+ 1   day        351 non-null    object
+ 2   open       351 non-null    object
+ 3   close      351 non-null    object
+dtypes: int64(1), object(3)
+memory usage: 11.1+ KB
+```
+``` SQL
+museum_hours.isnull().sum()
+museum_id    0
+day          0
+open         0
+close        0
+dtype: int64
+```
+### product_size
+``` SQL
+product_size.info()
+<class 'pandas.core.frame.DataFrame'>
+RangeIndex: 110347 entries, 0 to 110346
+Data columns (total 4 columns):
+ #   Column         Non-Null Count   Dtype 
+---  ------         --------------   ----- 
+ 0   work_id        110347 non-null  int64 
+ 1   size_id        110347 non-null  object
+ 2   sale_price     110347 non-null  int64 
+ 3   regular_price  110347 non-null  int64 
+dtypes: int64(3), object(1)
+memory usage: 3.4+ MB
+```
+``` SQL
+product_size.isnull().sum()
+work_id          0
+size_id          0
+sale_price       0
+regular_price    0
+dtype: int64
+```
+``` SQL
+product_size['size_id'].unique()
+array(['24', '30', '3024', '3226', '3629', '4030', '4836', '6048', '6854',
+       '3624', '4630', '5436', '6040', '7248', '20', '2430', '2632',
+       '2936', '3040', '3648', '4860', '5468', '36', '2436', '3046',
+       '3654', '4060', '4872', '1620', '2024', '1624', '2030', '40', '48',
+       '4020', '4824', '6030', '7236', '8040', '9648', '2424', '3030',
+       '3636', '4040', '4848', '6060', '2016', '2420', '2020', '2416',
+       '3020', '#VALUE!', '1632', '2040', '2448', '3060', '3672', '4080',
+       '16.223', '28.836', '39.532', '3216', '56', '3628.7', '32.226',
+       '3225.5', '4896', '3218', '32.426', '3239.8', '2936.5', '3225.6',
+       '3223.7', '36.329', '36.432', '36.532', '27.326', '31.944',
+       '28.525', '3232', '57.745', '4434', '3225.9', '2417.8', '7171',
+       '5136.5', '5439.4', '22.43', '26.232', '2429', '50.635', '39.632',
+       '3225.8', '3730', '3627', '35.652', '4235.5', '5062.6', '2823.2',
+       '2419.7', '25.632', '37.428', '2921.7', '2921.5', '2639.8',
+       '32.251', '31.525', '5936.2', '2923.6', '2923.7', '25.732',
+       '2632.1', '57.542', '3536.5', '38.531', '5691.2', '3225.7',
+       '32.326', '39.526', '23.529', '4023.7', '36.429', '36.326',
+       '36.829', '32.524', '36.529', '39.435', '79.163', '36.626',
+       '3239.4', '39.429', '5844.9', '3239.2', '57.545', '25.832',
+       '32.332', '28.824', '3628.6', '4635.4', '4635', '2632.3', '50.465',
+       '4835.8', '19.524', '28.936', '3246', '3628.5', '44.534', '3628.8',
+       '45.835', '28.537', '32.126', '28.724', '3729.3', '37.53',
+       '29.137', '3527.6', '2227.2', '4532', '3123.6', '3729.9', '26.332',
+       '2936.6', '35.628'], dtype=object)
+```
+``` SQL
+product_size['size_id'] = pd.to_numeric(product_size['size_id'],errors='coerce')
+
+product_size['size_id'].unique()
+array([  24.   ,   30.   , 3024.   , 3226.   , 3629.   , 4030.   ,
+       4836.   , 6048.   , 6854.   , 3624.   , 4630.   , 5436.   ,
+       6040.   , 7248.   ,   20.   , 2430.   , 2632.   , 2936.   ,
+       3040.   , 3648.   , 4860.   , 5468.   ,   36.   , 2436.   ,
+       3046.   , 3654.   , 4060.   , 4872.   , 1620.   , 2024.   ,
+       1624.   , 2030.   ,   40.   ,   48.   , 4020.   , 4824.   ,
+       6030.   , 7236.   , 8040.   , 9648.   , 2424.   , 3030.   ,
+       3636.   , 4040.   , 4848.   , 6060.   , 2016.   , 2420.   ,
+       2020.   , 2416.   , 3020.   ,      nan, 1632.   , 2040.   ,
+       2448.   , 3060.   , 3672.   , 4080.   ,   16.223,   28.836,
+         39.532, 3216.   ,   56.   , 3628.7  ,   32.226, 3225.5  ,
+       4896.   , 3218.   ,   32.426, 3239.8  , 2936.5  , 3225.6  ,
+       3223.7  ,   36.329,   36.432,   36.532,   27.326,   31.944,
+         28.525, 3232.   ,   57.745, 4434.   , 3225.9  , 2417.8  ,
+       7171.   , 5136.5  , 5439.4  ,   22.43 ,   26.232, 2429.   ,
+         50.635,   39.632, 3225.8  , 3730.   , 3627.   ,   35.652,
+       4235.5  , 5062.6  , 2823.2  , 2419.7  ,   25.632,   37.428,
+       2921.7  , 2921.5  , 2639.8  ,   32.251,   31.525, 5936.2  ,
+       2923.6  , 2923.7  ,   25.732, 2632.1  ,   57.542, 3536.5  ,
+         38.531, 5691.2  , 3225.7  ,   32.326,   39.526,   23.529,
+       4023.7  ,   36.429,   36.326,   36.829,   32.524,   36.529,
+         39.435,   79.163,   36.626, 3239.4  ,   39.429, 5844.9  ,
+       3239.2  ,   57.545,   25.832,   32.332,   28.824, 3628.6  ,
+       4635.4  , 4635.   , 2632.3  ,   50.465, 4835.8  ,   19.524,
+         28.936, 3246.   , 3628.5  ,   44.534, 3628.8  ,   45.835,
+         28.537,   32.126,   28.724, 3729.3  ,   37.53 ,   29.137,
+       3527.6  , 2227.2  , 4532.   , 3123.6  , 3729.9  ,   26.332,
+       2936.6  ,   35.628])
+```
+``` SQL
+product_size.shape
+(110347, 4)
+
+product_size.isnull().sum()
+work_id            0
+size_id          212
+sale_price         0
+regular_price      0
+dtype: int64
+
+product_size.dropna(subset=['size_id'],inplace=True)
+
+product_size.isnull().sum()
+work_id          0
+size_id          0
+sale_price       0
+regular_price    0
+dtype: int64
+```
 ``` SQL 
 use painting;
 
