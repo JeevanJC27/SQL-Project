@@ -227,7 +227,7 @@ with
 		where day = 'Monday'
 	),
 	cte as (	
-        select 
+        	select 
 			museum_id
 		from sun
 		join mon 
