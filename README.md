@@ -33,8 +33,8 @@ select *
 from product_size
 where sale_price > regular_price;
 ```
--- 4) Identify the paintings whose asking price is less than 50% of its regular price
-
+#### 4) Identify the paintings whose asking price is less than 50% of its regular price
+``` SQL
 select work_id,size_id,sale_price,regular_price
 from (
 	select 
@@ -43,9 +43,10 @@ from (
 	from product_size) as t
 where sales_percentage < 50
 order by regular_price desc;
+```
 
--- 5) Which canva size costs the most?
-
+#### 5) Which canva size costs the most?
+``` SQL
 select 
 	c.*,sale_price,regular_price
 from (
@@ -56,9 +57,11 @@ from (
 join canvas_size as c 
 	on c.size_id = t.size_id
 where rnk = 1;
+```
 
--- 6) Delete duplicate records from work, product_size, subject and image_link tables
--- work 
+#### 6) Delete duplicate records from work, product_size, subject and image_link tables
+##### work table
+``` SQL 
 drop procedure if exists diplicate_fetch;
 
 delimiter $$
@@ -87,8 +90,10 @@ end $$
 delimiter ;
 
 call diplicate_fetch();
+```
 
--- product_size
+##### product_size
+``` SQL
 drop procedure if exists diplicate_fetch;
 
 delimiter $$
@@ -117,8 +122,10 @@ end $$
 delimiter ;
 
 call diplicate_fetch();
+```
 
--- subject
+##### subject
+``` SQL
 drop procedure if exists diplicate_fetch;
 
 delimiter $$
@@ -147,8 +154,9 @@ end $$
 delimiter ;
 
 call diplicate_fetch();
-
--- image_link
+```
+##### image_link
+``` SQL
 drop procedure if exists diplicate_fetch;
 
 delimiter $$
@@ -177,24 +185,24 @@ end $$
 delimiter ;
 
 call diplicate_fetch();
-
--- 7) Identify the museums with invalid city information in the given dataset
-
+```
+#### 7) Identify the museums with invalid city information in the given dataset
+``` SQL
 select * 
 from museum
 where city regexp "[0-9]";
-
--- 8) Museum_Hours table has 1 invalid entry. Identify it and remove it.
-
+```
+#### 8) Museum_Hours table has 1 invalid entry. Identify it and remove it.
+``` SQL
 update Museum_Hours
 set day = 'Thursday'
 where day = "Thusday";
 
 select distinct day
 from Museum_Hours;
-
--- 9) Fetch the top 10 most famous painting subject
-
+```
+#### 9) Fetch the top 10 most famous painting subject
+``` SQL
 select 
 	subject,
     count(*) as no_of_painting,
@@ -204,9 +212,9 @@ join subject
 	using(work_id)
 group by subject
 limit 10;
-
--- 10) Identify the museums which are open on both Sunday and Monday. Display museum name, city.
-    
+```
+#### 10) Identify the museums which are open on both Sunday and Monday. Display museum name, city.
+``` SQL  
 with 
 	Sun as (
 		select * 
@@ -231,9 +239,9 @@ select
 from cte
 join museum
 	using(museum_id);
-    
--- 11) How many museums are open every single day?
-
+```  
+#### 11) How many museums are open every single day?
+``` SQL
 select 
 	name as museum_name,
     city
@@ -244,9 +252,9 @@ from (
 	having count(*) = 7) as t
 join museum as m
 	using(museum_id);
-    
--- 12) Which are the top 5 most popular museum? (Popularity is defined based on most no of paintings in a museum)
-
+ ```   
+#### 12) Which are the top 5 most popular museum? (Popularity is defined based on most no of paintings in a museum)
+``` SQL
 with 
 	museum_painting as (
 		select 
@@ -267,9 +275,9 @@ join museum
 	using(museum_id)
 order by no_of_painting desc
 limit 5;
-
--- 13) Who are the top 5 most popular artist? (Popularity is defined based on most no of paintings done by an artist)
-
+```
+#### 13) Who are the top 5 most popular artist? (Popularity is defined based on most no of paintings done by an artist)
+``` SQL
 with 
 	artist_Painted as(
 		select 
@@ -288,10 +296,10 @@ join artist
 	using(artist_id)
 order by no_of_painting desc
 limit 5;
+```
 
-
--- 14) Display the 3 least popular canva sizes
-
+#### 14) Display the 3 least popular canva sizes
+``` SQL
 select 
 	size_id,
 	label,
@@ -304,10 +312,9 @@ join canvas_size
 	using(size_id)
 group by size_id, label
 limit 3;
-
--- 15) Which museum is open for the longest during a day. 
--- Dispay museum name, city and hours open and which day?
-
+```
+#### 15) Which museum is open for the longest during a day. Dispay museum name, city and hours open and which day?
+``` SQL
 select 
 	museum_id,
 	name as museum_name,
@@ -328,9 +335,9 @@ from (
 join museum
 	using(museum_id)
 where rnk = 1;
-
--- 16) Which museum has the most no of most popular painting style?
-
+```
+#### 16) Which museum has the most no of most popular painting style?
+``` SQL
 with cte as(
 	select 
 		style,
@@ -351,9 +358,9 @@ select
 	m.museum_id, name as museum_name, city, country
 from museum as m
 where exists (select museum_id from cte1 as c where c.museum_id = m.museum_id);
-
--- 17) Identify the artists whose paintings are displayed in multiple countries
-
+```
+#### 17) Identify the artists whose paintings are displayed in multiple countries
+``` SQL
 select * from artist;
 select * from work;
 select * from museum;
@@ -371,11 +378,9 @@ GROUP BY
     a.artist_id, a.full_name
 HAVING
     COUNT(DISTINCT m.country) > 1;
-    
--- 18) Display the country and the city with most no of museums. 
--- Output 2 seperate columns to mention the city and country. 
--- If there are multiple value, seperate them with comma.
-
+ ```   
+#### 18) Display the country and the city with most no of museums. Output 2 seperate columns to mention the city and country. If there are multiple value, seperate them with comma.
+``` SQL
 with cte_country as(
 	select *
 	from (
@@ -401,10 +406,9 @@ select
     group_concat(city order by city separator ' , ') as city
 from cte_country
 cross join cte_city;
-
--- 19) Identify the artist and the museum where the most expensive and least expensive painting is placed. 
--- Display the artist name, sale_price, painting name, museum name, museum city and canvas label
-
+```
+#### 19) Identify the artist and the museum where the most expensive and least expensive painting is placed. Display the artist name, sale_price, painting name, museum name, museum city and canvas label
+``` SQL
 select * from artist;
 select * from product_size;
 select * from museum;
@@ -450,9 +454,9 @@ join museum as m
 	on m.museum_id = w.museum_id
 join canvas_size as cs
 	on cs.size_id = c.size_id;
-
--- 20) Which country has the 5th highest no of paintings?
-
+```
+#### 20) Which country has the 5th highest no of paintings?
+``` SQL
 select 
 	country,
     counts as no_of_paintings
@@ -466,9 +470,9 @@ from (
 		using(museum_id)
 	group by country) as t 
 where rnk = 5;
-
--- 21) Which are the 3 most popular and 3 least popular painting styles?
-
+```
+####  21) Which are the 3 most popular and 3 least popular painting styles?
+``` SQL
 with 
 	cte_most as(
 		select 
@@ -495,10 +499,9 @@ select
 from cte_most as m
 join cte_least as l
 	on m.rnk = l.rnk;
-    
--- 22) Which artist has the most no of Portraits paintings outside USA?. 
--- Display artist name, no of paintings and the artist nationality.
-
+```  
+#### 22) Which artist has the most no of Portraits paintings outside USA?. Display artist name, no of paintings and the artist nationality.
+``` SQL
 with cte as (
 	select 
 		full_name as artist_name,
@@ -522,6 +525,6 @@ select
     no_of_painting
 from cte
 where rnk = 1;
-
+```
 
 
